@@ -5,6 +5,7 @@ import * as Yup from 'yup'
 import { Password } from "@mui/icons-material";
 import {ArrowBack, Google, Visibility,VisibilityOff} from '@mui/icons-material'
 import { IoPersonAdd } from "react-icons/io5";
+import useGeneral from "../hooks/useGeneral";
 // import React from "react";
 const Register =()=>{
      const initialState={
@@ -12,6 +13,7 @@ const Register =()=>{
         email:'',
         password:'',
      }
+     const {navigate}=useGeneral();
      const validationSchema=Yup.object({
         name:Yup.string().required('name is required'),
         email:Yup.string().email('must be a valid email').required('email is required'),
@@ -86,7 +88,9 @@ const Register =()=>{
                 </div>
                  
                 <div className="col-12">
-                    <Button startIcon={<ArrowBack/>}
+                    <Button 
+                    onClick={()=>navigate('/login')}
+                    startIcon={<ArrowBack/>}
                     variant="outlined" fullWidth>Back To Login</Button>
                 </div>
 

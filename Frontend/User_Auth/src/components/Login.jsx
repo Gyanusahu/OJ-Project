@@ -4,9 +4,11 @@ import {TextField,Button, FormControl, InputAdornment, IconButton, Divider} from
 import * as Yup from 'yup';
 import {Form,Formik} from "formik";
 import {ArrowBack, Google, Visibility,VisibilityOff} from '@mui/icons-material'
+import useGeneral from "../hooks/useGeneral";
 const Login=()=>{
     // validation to check Every details Is Enter or Not
     const [visible,setVisible]=useState(false)
+    const {navigate}=useGeneral()
     const visibleHandler=()=>{
         setVisible(!visible)
     }
@@ -89,11 +91,15 @@ const Login=()=>{
                 </div>
 
                 <div className="col-12">
-                    <Button startIcon={<ArrowBack/>}
+                    <Button 
+                    onClick={()=>navigate('/register')}
+                    startIcon={<ArrowBack/>}
                     variant="outlined" fullWidth>create new account</Button>
                 </div>
                 <div className="col-12">
-                    <Button fullWidth variant="text" color="error">
+                    <Button 
+                    onClick={()=>navigate('/password/forgot')}
+                    fullWidth variant="text" color="error">
                         forgotten password?
                     </Button>
                 </div>

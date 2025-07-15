@@ -5,8 +5,9 @@ import * as Yup from 'yup'
 import { MdOutlineVerified } from "react-icons/md";
 import { ArrowBack } from "@mui/icons-material";
 import Countdown from "react-countdown"
+import useGeneral from "../hooks/useGeneral";
 const OtpVerify=()=>{
-
+    const {navigate}=useGeneral();
     const initialState={
         otp1:'',
         otp2:'',
@@ -25,6 +26,7 @@ const OtpVerify=()=>{
     })
     const submitHandler=(values)=>{
         console.log(values);
+        navigate('/password/update')
     }
     const otpArray=['otp1','otp2','otp3','otp4','otp5','otp6']
     const inputChange=(value,setFieldValue,index,item)=>{
@@ -74,7 +76,9 @@ const OtpVerify=()=>{
                </div>
                 
                 <div className="col-12">
-                    <Button variant="outlined" fullWidth startIcon={<ArrowBack/>}>Back to Login</Button>
+                    <Button 
+                    onClick={()=>navigate('/login')}
+                    variant="outlined" fullWidth startIcon={<ArrowBack/>}>Back to Login</Button>
                 </div>
                <Countdown 
                renderer={({minutes,seconds,completed})=>{
@@ -89,7 +93,7 @@ const OtpVerify=()=>{
                     );
                  }
                }}
-               date={new Date().getTime()+0.03*60*1000}/>
+               date={new Date().getTime()+2*60*1000}/>
             </div>
           </div>
     </Form>}

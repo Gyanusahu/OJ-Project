@@ -5,8 +5,9 @@ import {TextField,Button} from "@mui/material"
 import {Form,Formik} from 'formik' 
 import * as Yup from 'yup'
 import { ArrowBack, Send } from "@mui/icons-material";
-
+import useGeneral from "../hooks/useGeneral";
 const ForgotPassword=()=>{
+    const {navigate}=useGeneral();
     const initialState={
         email:''
     }
@@ -15,6 +16,7 @@ const ForgotPassword=()=>{
     })
     const submitHandler=(values)=>{
         console.log(values)
+        navigate('/otp/verify')
     }
     return(
         <div className="auth_card">
@@ -43,11 +45,14 @@ const ForgotPassword=()=>{
                             </div>
 
                             <div className="col-12">
-                                <Button type="submit" variant="contained" fullWidth endIcon={<Send />}>Send OTP</Button>
+                                <Button 
+                                type="submit" variant="contained" fullWidth endIcon={<Send />}>Send OTP</Button>
                             </div>
 
                              <div className="col-12">
-                    <Button startIcon={<ArrowBack/>}
+                    <Button 
+                    onClick={()=>navigate('/login')}
+                    startIcon={<ArrowBack/>}
                     variant="outlined" fullWidth>Back To Login</Button>
                 </div>
 

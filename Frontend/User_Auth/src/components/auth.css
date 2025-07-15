@@ -37,3 +37,22 @@
     justify-content: center;
     gap: 1rem;
 }
+
+.profile_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap:1rem;
+}
+
+.full_name{
+    text-transform: capitalize;
+    font-weight: 700;
+}
+.email{
+    color: grey;
+}
+.action{
+    margin-top: 1rem;
+}

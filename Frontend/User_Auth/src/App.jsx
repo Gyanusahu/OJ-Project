@@ -5,6 +5,8 @@ import {Routes,Route} from 'react-router-dom'
 import Register from "./components/Register";
 import ForgotPassword from "./components/ForgotPassword";
 import OtpVerify from "./components/OtpVerify";
+import UpdatePassword from "./components/UpdatePassword";
+import Profile from "./components/profile";
 const App=()=>{
     return (
         <Routes>
@@ -12,6 +14,8 @@ const App=()=>{
             <Route path="/register" element={<Register/>}/>
             <Route path="/password/forgot" element={<ForgotPassword />}/>
             <Route path="/otp/verify" element={<OtpVerify />}/>
+            <Route path="/password/update" element={<UpdatePassword />}/>
+            <Route path="/" element={<Profile/>}/>
         </Routes>
     )
 }
