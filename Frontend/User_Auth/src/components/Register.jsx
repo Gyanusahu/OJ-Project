@@ -23,6 +23,9 @@ const Register =()=>{
      const submitHandler=(values)=>{
         console.log(values)
      }
+       const loginWithGoogle=()=>{
+        window.location.href='http://localhost:5050/auth/google'
+    }
     return(
         <div className="auth_card">
             <Formik onSubmit={submitHandler} initialValues={initialState} validationSchema={validationSchema}>
@@ -84,7 +87,9 @@ const Register =()=>{
                 </div>
 
                 <div className="col-12">
-                   <Button variant="outlined" fullWidth endIcon={<Google/>}>Continue With Google</Button>
+                   <Button 
+                   onClick={loginWithGoogle}
+                   variant="outlined" fullWidth endIcon={<Google/>}>Continue With Google</Button>
                 </div>
                  
                 <div className="col-12">
