@@ -6,6 +6,9 @@ import { Password } from "@mui/icons-material";
 import {ArrowBack, Google, Visibility,VisibilityOff} from '@mui/icons-material'
 import { IoPersonAdd } from "react-icons/io5";
 import useGeneral from "../hooks/useGeneral";
+import httpAction from "../utils/httpAction";
+import apis from "../utils/apis";
+ import {  toast } from 'react-toastify';
 // import React from "react";
 const Register =()=>{
      const initialState={
@@ -20,8 +23,19 @@ const Register =()=>{
         password:Yup.string().required('password is required')
      })
 
-     const submitHandler=(values)=>{
-        console.log(values)
+     const submitHandler=async(values)=>{
+        // console.log(values)
+        const data={
+            url:apis().registerUser,
+            method:'POST',
+            body:values,
+        }
+        const result=await httpAction(data)
+        // console.log(result);
+        if(result?.status){
+            toast.success(result?.message);
+            navigate("/login")
+        }
      }
        const loginWithGoogle=()=>{
         window.location.href='http://localhost:5050/auth/google'

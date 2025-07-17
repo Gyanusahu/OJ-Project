@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 import {Form,Formik} from "formik";
 import {ArrowBack, Google, Visibility,VisibilityOff} from '@mui/icons-material'
 import useGeneral from "../hooks/useGeneral";
+import apis from "../utils/apis";
+import httpAction from "../utils/httpAction";
 const Login=()=>{
     // validation to check Every details Is Enter or Not
     const [visible,setVisible]=useState(false)
@@ -22,8 +24,18 @@ const Login=()=>{
         password:Yup.string().required('password is required')
     })
 
-    const submitHandler=(values)=>{
+    const submitHandler=async (values)=>{
         console.log(values)
+        const data={
+            url:apis().loginUser,
+            method:'POST',
+            body:values,
+        }
+        const result=await httpAction(data);
+        console.log(result)
+        if(result?.status){
+           navigate("/")
+        }
     }
 
 

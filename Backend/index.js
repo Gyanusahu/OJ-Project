@@ -8,6 +8,8 @@ const googleStrategy=require('passport-google-oauth20').Strategy;
 const getConnection=require('./utils/getConnection')
 const googleAuth=require('./middlewares/googleAuth')
 const app=express();
+const userRoutes=require('./routes/user')
+const errorHandler=require('./middlewares/errorHandler')
 app.use(cors({
     origin:'http://localhost:3000',
     credentials:true
@@ -52,5 +54,7 @@ googleAuth,
 (req,res,next)=>{
     res.redirect("http://localhost:3000/");
 })
+app.use('/user',userRoutes)
+app.use(errorHandler)
 getConnection()
 app.listen(process.env.PORT,()=>console.log(`server is running on port: ${process.env.PORT}`))

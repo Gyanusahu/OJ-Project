@@ -5,6 +5,7 @@ const userSchema=new mongoose.Schema({
     name:{type:String},
     email:{type:String},
     password:{type:String},
+    isAdmin: { type: Boolean, default: false },
     password_otp:{
         otp:{type:String},
         send_time:{type:String},
