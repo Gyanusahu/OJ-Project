@@ -1,0 +1,23 @@
+.super-loader {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #0d1117; /* GitHub-like dark theme */
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  gap: 15px;
+}
+
+.loading-text {
+  animation: blink 1.5s infinite;
+  color: #58a6ff;
+}
+
+@keyframes blink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.3; }
+  100% { opacity: 1; }
+}
