@@ -4,7 +4,7 @@ const {executeCpp} =require("./executeCpp")
 
 const app=express();
 const cors = require('cors');
-
+const {generateAiReview}=require("./generateAiReview")
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
@@ -48,6 +48,27 @@ app.post("/submit", async (req, res) => {
     return res.status(500).json({ success: false, error: error.stderr || "Execution failed" });
   }
 });
+
+app.post("/ai-review", async (req, res) => {
+  const { code, problemDescription } = req.body;
+
+  if (!code || !problemDescription) {
+    return res.status(400).json({ success: false, error: "Missing code or problem description." });
+  }
+
+  try {
+    const aiReview = await generateAiReview(code, problemDescription);
+    res.status(200).json({ success: true, aiReview });
+  } catch (error) {
+    console.error("AI Review Error:", error.message);
+    res.status(500).json({
+      success: false,
+      error: error.message || "Failed to generate AI review",
+    });
+  }
+});
+
+
 
 const PORT=7000;
 app.listen(PORT,(error)=>{

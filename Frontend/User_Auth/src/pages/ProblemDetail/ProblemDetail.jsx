@@ -6,6 +6,8 @@ import Badge from 'react-bootstrap/Badge';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
+import './ProblemDetail.css';
+import ReactMarkdown from 'react-markdown';
 
 const ProblemDetail = () => {
   const { id } = useParams();
@@ -14,6 +16,29 @@ const ProblemDetail = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [aiReview, setAiReview] = useState('');
+const [reviewLoading, setReviewLoading] = useState(false);
+
+const handleAiReview = async () => {
+  if (!code || !problem.statement) return alert("Missing code or problem description");
+
+  setReviewLoading(true);
+  try {
+    const res = await axios.post("http://localhost:7000/ai-review", {
+      code,
+      problemDescription: problem.statement
+    });
+
+    if (res.data.success) {
+      setAiReview(res.data.aiReview);  // Adjust to match backend return
+    } else {
+      setAiReview("❌ AI Review failed.");
+    }
+  } catch (err) {
+    setAiReview(err.response?.data?.error || "Unknown AI review error");
+  }
+  setReviewLoading(false);
+};
 
   useEffect(() => {
     const fetchProblem = async () => {
@@ -75,91 +100,116 @@ const handleSubmit = async () => {
   if (!problem) return <p className="text-center mt-5">Loading...</p>;
 
   return (
-    <>
-      <Headers />
-      <div className="container mt-4">
-        <div className="d-flex justify-content-between align-items-center">
-          <h2>{problem.title}</h2>
-          <Badge bg={
-            problem.difficulty === "Easy" ? "success" :
-            problem.difficulty === "Medium" ? "warning" : "danger"
-          }>
-            {problem.difficulty}
-          </Badge>
-        </div>
-
-        <p><strong>Description:</strong><br />{problem.statement}</p>
-        <p><strong>Input Format:</strong><br />{problem.inputFormat}</p>
-        <p><strong>Output Format:</strong><br />{problem.outputFormat}</p>
-        <p><strong>Constraints:</strong><br />{problem.constraints}</p>
-        <p><strong>Tags:</strong> {problem.tags.map((tag, i) => (
-          <Badge key={i} bg="secondary" className="me-1">{tag}</Badge>
-        ))}</p>
-
-        {problem.samples.map((sample, idx) => (
-          <div key={idx} className="mb-3">
-            <p><strong>Sample Input:</strong></p>
-            <Form.Control as="textarea" value={sample.input} rows={2} readOnly />
-            <p className="mt-2"><strong>Sample Output:</strong></p>
-            <Form.Control as="textarea" value={sample.output} rows={2} readOnly />
+  <>
+    <Headers />
+    <div className="container mt-4">
+      <div className="row">
+        {/* Left Panel */}
+        <div className="col-md-6">
+          <div className="mb-3">
+            <h3>{problem.title}</h3>
+            <Badge bg={
+              problem.difficulty === "Easy" ? "success" :
+              problem.difficulty === "Medium" ? "warning" : "danger"
+            }>
+              {problem.difficulty}
+            </Badge>
           </div>
-        ))}
 
-        <div className="mt-4">
-          <h5>Code Editor:</h5>
-          <Form.Control
-            as="textarea"
-            rows={10}
-            placeholder="# Write your C++ code here"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
+          <p><strong>Description:</strong> {problem.statement}</p>
+          <p><strong>Input Format:</strong><br />{problem.inputFormat}</p>
+          <p><strong>Output Format:</strong><br />{problem.outputFormat}</p>
+          {problem.constraints && (
+            <p><strong>Constraints:</strong><br />{problem.constraints}</p>
+          )}
+          <p><strong>Tags:</strong> {problem.tags.map((tag, i) => (
+            <Badge key={i} bg="secondary" className="me-1">{tag}</Badge>
+          ))}</p>
+
+          {/* Samples */}
+          {problem.samples.map((sample, idx) => (
+            <div key={idx}>
+              <p><strong>Sample Input:</strong></p>
+              <Form.Control as="textarea" rows={2} value={sample.input} readOnly className="mb-2" />
+              <p><strong>Sample Output:</strong></p>
+              <Form.Control as="textarea" rows={2} value={sample.output} readOnly className="mb-3" />
+            </div>
+          ))}
         </div>
 
-        <div className="mt-3 d-flex gap-2">
-          <Form.Control
-            as="textarea"
-            placeholder="Enter custom input..."
-            rows={3}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            style={{ flex: 1 }}
-          />
-          <Form.Control
-            as="textarea"
-            placeholder="Output..."
-            rows={3}
-            value={loading ? 'Running...' : output}
-            readOnly
-            style={{ flex: 1, backgroundColor: '#f8f9fa' }}
-          />
-        </div>
+        {/* Right Panel */}
+        {/* Right Panel */}
+<div className="col-md-6">
+  <h5>Code Editor:</h5>
+  <Form.Control
+    as="textarea"
+    rows={18}
+    placeholder="# Write your C++ code here"
+    value={code}
+    onChange={(e) => setCode(e.target.value)}
+    className="mb-3"
+    style={{ backgroundColor: "#1e1e1e", color: "white", fontFamily: "monospace" }}
+  />
 
-        <div className="mt-3 d-flex gap-3">
-          <Button variant="primary" onClick={handleRun} disabled={loading}>
-            {loading ? (
-              <>
-                <Spinner animation="border" size="sm" /> Running...
-              </>
-            ) : (
-              'Run'
-            )}
-          </Button>
-         <Button variant="success" onClick={handleSubmit} disabled={loading}>
-  {loading ? (
-    <>
-      <Spinner animation="border" size="sm" /> Submitting...
-    </>
-  ) : (
-    'Submit'
-  )}
-</Button>
+  <div className="d-flex gap-2 mb-3">
+    <Form.Control
+      as="textarea"
+      placeholder="Custom Input"
+      rows={3}
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      style={{ resize: 'none' }}
+    />
+    <Form.Control
+      as="textarea"
+      placeholder="Output"
+      rows={3}
+      value={loading ? 'Running...' : output}
+      readOnly
+      style={{ backgroundColor: '#f1f1f1', resize: 'none' }}
+    />
+  </div>
 
-          <Button variant="info" disabled>AI Review</Button>
-        </div>
+  <div className="d-flex gap-3 mb-3">
+    <Button variant="primary" onClick={handleRun} disabled={loading}>
+      {loading ? <Spinner animation="border" size="sm" /> : 'Run'}
+    </Button>
+    <Button variant="success" onClick={handleSubmit} disabled={loading}>
+      {loading ? <Spinner animation="border" size="sm" /> : 'Submit'}
+    </Button>
+    <Button variant="info" onClick={handleAiReview} disabled={reviewLoading}>
+      {reviewLoading ? <Spinner animation="border" size="sm" /> : 'AI Review'}
+    </Button>
+  </div>
+
+{aiReview && aiReview.trim() !== '' && (
+ <div className="mt-3">
+  <h6>AI Review:</h6>
+  
+    <div
+      className="markdown-box"
+      style={{
+        backgroundColor: '#f8f9fa',
+        padding: '1rem',
+        borderRadius: '8px',
+        border: '1px solid #dee2e6',
+        maxHeight: '300px',
+        overflowY: 'auto',
+        fontSize: '0.95rem',
+        whiteSpace: 'pre-wrap',
+        lineHeight: '1.5',
+      }}
+    >
+      <ReactMarkdown>{aiReview}</ReactMarkdown>
+    </div>
+</div>
+)}
+</div>
+
       </div>
-    </>
-  );
-};
+    </div>
+  </>
+);
 
+}
 export default ProblemDetail;
