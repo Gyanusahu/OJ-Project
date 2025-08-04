@@ -1,6 +1,7 @@
 const express=require("express")
 const {generateFile}=require("./generateFile")
 const {executeCpp} =require("./executeCpp")
+require("./cleanup"); 
 
 const app=express();
 const cors = require('cors');
