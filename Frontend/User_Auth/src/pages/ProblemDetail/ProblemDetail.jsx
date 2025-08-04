@@ -73,8 +73,7 @@ const handleAiReview = async () => {
 
 const handleSubmit = async () => {
   if (!problem.samples.length) return alert("No test cases found!");
-
-  const test = problem.samples[0]; // use first test case
+  const test = problem.samples[0];
   setLoading(true);
 
   try {
@@ -86,7 +85,17 @@ const handleSubmit = async () => {
     });
 
     if (res.data.success) {
-      setOutput(res.data.verdict === "Accepted" ? "✅ Accepted" : `❌ Failed\nYour Output:\n${res.data.actualOutput}`);
+      setOutput(res.data.verdict === "Accepted"
+        ? "✅ Accepted"
+        : `❌ Failed\nYour Output:\n${res.data.actualOutput}`);
+
+      // Increment submission count if verdict is available
+    await axios.post("http://localhost:5050/api/user/increment-submission", {}, {
+  withCredentials: true
+});
+
+
+
     } else {
       setOutput("❌ Submission Error");
     }
@@ -96,6 +105,7 @@ const handleSubmit = async () => {
 
   setLoading(false);
 };
+
 
   if (!problem) return <p className="text-center mt-5">Loading...</p>;
 
@@ -142,14 +152,19 @@ const handleSubmit = async () => {
 <div className="col-md-6">
   <h5>Code Editor:</h5>
   <Form.Control
-    as="textarea"
-    rows={18}
-    placeholder="# Write your C++ code here"
-    value={code}
-    onChange={(e) => setCode(e.target.value)}
-    className="mb-3"
-    style={{ backgroundColor: "#1e1e1e", color: "white", fontFamily: "monospace" }}
-  />
+  as="textarea"
+  rows={18}
+  placeholder="# Write your C++ code here"
+  value={code}
+  onChange={(e) => setCode(e.target.value)}
+  className="mb-3 code-editor"
+  style={{
+    backgroundColor: "#1e1e1e",
+    color: "white",
+    fontFamily: "monospace",
+  }}
+/>
+
 
   <div className="d-flex gap-2 mb-3">
     <Form.Control

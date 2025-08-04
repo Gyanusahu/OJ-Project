@@ -55,7 +55,8 @@ googleAuth,
 (req,res,next)=>{
     res.redirect("http://localhost:3000/");
 })
-app.use('/user',userRoutes)
+app.use('/api/user', userRoutes); 
+
 app.use('/api/problems', problemRoutes);
 app.use(errorHandler)
 getConnection()

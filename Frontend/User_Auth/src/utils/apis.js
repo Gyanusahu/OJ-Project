@@ -2,19 +2,19 @@ const apis = () => {
   const local = "http://localhost:5050/";
 
   const list = {
-    // 🧑 Auth
-    registerUser: `${local}user/register`,
-    loginUser: `${local}user/login`,
-    userProfile: `${local}user/profile`,
-    logout: `${local}user/logout`,
-    getAccess: `${local}user/access`,
+    // 🧑 Auth (✅ add /api)
+    registerUser: `${local}api/user/register`,
+    loginUser: `${local}api/user/login`,
+    userProfile: `${local}api/user/profile`,
+    logout: `${local}api/user/logout`,
+    getAccess: `${local}api/user/access`,
 
-    // 📚 Problem APIs
+    // 📚 Problem APIs (already correct)
     addProblem: `${local}api/problems/add`,
-    getProblems: `${local}api/problems`,       // supports query ?title=...&tag=...&difficulty=...&page=1&limit=5
+    getProblems: `${local}api/problems`,
     getProblemById: (id) => `${local}api/problems/${id}`,
-    updateProblem: (id) => `${local}api/problems/update/${id}`,  // if you support edit
-    deleteProblem: (id) => `${local}api/problems/delete/${id}`   // if you support delete
+    updateProblem: (id) => `${local}api/problems/update/${id}`,
+    deleteProblem: (id) => `${local}api/problems/delete/${id}`
   };
 
   return list;

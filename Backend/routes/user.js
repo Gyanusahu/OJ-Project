@@ -6,9 +6,11 @@ const getUser=require('../controllers/getUser')
 const auth=require('../middlewares/auth')
 const logout=require('../controllers/logout')
 const getAccess=require('../controllers/getAccess')
+const incrementSubmission = require('../controllers/incrementSubmission');
 router.post('/register',register);
 router.post('/login',login)
 router.get('/profile',auth,getUser)
 router.get('/logout',logout)
 router.get('/access',auth,getAccess)
+router.post('/increment-submission', auth, incrementSubmission);
 module.exports=router

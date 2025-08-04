@@ -15,3 +15,7 @@ textarea.form-control {
   border-radius: 4px;
   font-family: monospace;
 }
+.code-editor::placeholder {
+  color: #ffffff;
+  opacity: 0.6; /* Optional: make it slightly dimmer than full white */
+}

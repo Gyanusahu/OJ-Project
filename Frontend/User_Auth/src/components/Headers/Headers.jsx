@@ -40,30 +40,45 @@ const data={
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
-      <Container fluid className="d-flex align-items-center">
-        <Navbar.Brand href="/" className="brand-title">
-          CodeRush
-        </Navbar.Brand>
+  <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
+    <Container fluid className="d-flex align-items-center">
+      <Navbar.Brand href="/" className="brand-title">
+        CodeRush
+      </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          {/* Left Side Nav */}
-          <Nav className="ms-4 d-flex gap-3 align-items-center">
-            <Nav.Link href="/problems" className="custom-nav-link">Problems</Nav.Link>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        {/* Left Side Navigation */}
+        <Nav className="ms-4 d-flex gap-3 align-items-center">
+          <Nav.Link href="/problems" className="custom-nav-link">Problems</Nav.Link>
+
+          {/* ✅ Show only for admins */}
+          {user?.isAdmin && (
             <Nav.Link href="/addproblems" className="custom-nav-link">Add Problems</Nav.Link>
-          </Nav>
+          )}
+        </Nav>
 
-          {/* Right Side Logout */}
-          <div className="ms-auto me-3">
-            <Button variant="outline-light" className="logout-button" onClick={handleLogout}>
-              Logout
-            </Button>
-          </div>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
+        {/* Right Side Buttons */}
+        <div className="ms-auto d-flex align-items-center gap-2 me-3">
+          <Button
+            variant="outline-info"
+            onClick={() => navigate('/dashboard')}
+          >
+            User Dashboard
+          </Button>
+          <Button
+            variant="outline-light"
+            className="logout-button"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </div>
+      </Navbar.Collapse>
+    </Container>
+  </Navbar>
+);
+
 };
 
 export default Headers;

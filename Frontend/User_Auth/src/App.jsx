@@ -19,6 +19,7 @@ import Edit from "./pages/Edit/Edit";
 import Profile from "./pages/Profile/Profile";
 import ProblemList from "./pages/ProblemList/ProblemList";
 import ProblemDetail from "./pages/ProblemDetail/ProblemDetail";
+import UserDashboard from "./pages/UserDashboard/userDashboard";
 const App=()=>{
     return (
         <>
@@ -31,6 +32,7 @@ const App=()=>{
             <Route path="/password/update" element={<UpdatePassword />}/>
            
             <Route element={<Super/>}>
+            <Route path="/dashboard" element={<UserDashboard/>}/>
             <Route path="/" element={<MyProfile/>}/>
              <Route path="/problems" element={<ProblemList />} />
             <Route path="/home" element={<Home/>}/>
