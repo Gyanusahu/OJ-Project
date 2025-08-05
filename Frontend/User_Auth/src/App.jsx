@@ -20,6 +20,7 @@ import Profile from "./pages/Profile/Profile";
 import ProblemList from "./pages/ProblemList/ProblemList";
 import ProblemDetail from "./pages/ProblemDetail/ProblemDetail";
 import UserDashboard from "./pages/UserDashboard/userDashboard";
+import Leaderboard from "./pages/LeaderBoard/Leaderboard";
 const App=()=>{
     return (
         <>
@@ -33,6 +34,7 @@ const App=()=>{
            
             <Route element={<Super/>}>
             <Route path="/dashboard" element={<UserDashboard/>}/>
+            <Route path="/leaderboard" element={<Leaderboard/>} />
             <Route path="/" element={<MyProfile/>}/>
              <Route path="/problems" element={<ProblemList />} />
             <Route path="/home" element={<Home/>}/>

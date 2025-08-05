@@ -59,21 +59,29 @@ const data={
         </Nav>
 
         {/* Right Side Buttons */}
-        <div className="ms-auto d-flex align-items-center gap-2 me-3">
-          <Button
-            variant="outline-info"
-            onClick={() => navigate('/dashboard')}
-          >
-            User Dashboard
-          </Button>
-          <Button
-            variant="outline-light"
-            className="logout-button"
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
-        </div>
+        {/* Right Side Buttons */}
+<div className="ms-auto d-flex align-items-center gap-2 me-3">
+  <Button
+    variant="outline-warning"
+    onClick={() => navigate('/leaderboard')}
+  >
+    🏆 Leaderboard
+  </Button>
+  <Button
+    variant="outline-info"
+    onClick={() => navigate('/dashboard')}
+  >
+    User Dashboard
+  </Button>
+  <Button
+    variant="outline-light"
+    className="logout-button"
+    onClick={handleLogout}
+  >
+    Logout
+  </Button>
+</div>
+
       </Navbar.Collapse>
     </Container>
   </Navbar>
