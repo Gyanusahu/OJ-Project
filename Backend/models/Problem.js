@@ -1,3 +1,4 @@
+// ✅ models/problem.js
 const mongoose = require('mongoose');
 
 const problemSchema = new mongoose.Schema({
@@ -9,6 +10,12 @@ const problemSchema = new mongoose.Schema({
   outputFormat: String,
   constraints: String,
   samples: [
+    {
+      input: String,
+      output: String,
+    },
+  ],
+  hiddenTests: [
     {
       input: String,
       output: String,

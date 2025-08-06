@@ -1,5 +1,5 @@
+// ✅ AddProblem.jsx
 import React, { useState, useEffect } from 'react';
-// import "./AddProblem.css";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -20,9 +20,12 @@ const AddProblem = () => {
     constraints: '',
     sampleInput: '',
     sampleOutput: '',
+    hiddenTests: [
+      { input: '', output: '' },
+      { input: '', output: '' }
+    ]
   });
 
-  // ✅ Load from localStorage when component mounts
   useEffect(() => {
     const savedDraft = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (savedDraft) {
@@ -30,7 +33,6 @@ const AddProblem = () => {
     }
   }, []);
 
-  // ✅ Save to localStorage every time the form changes
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(problem));
   }, [problem]);
@@ -39,9 +41,14 @@ const AddProblem = () => {
     setProblem({ ...problem, [e.target.name]: e.target.value });
   };
 
+  const handleHiddenTestChange = (index, field, value) => {
+    const updated = [...problem.hiddenTests];
+    updated[index][field] = value;
+    setProblem({ ...problem, hiddenTests: updated });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const tagsArray = problem.tags.split(',').map(tag => tag.trim());
 
     const payload = {
@@ -57,22 +64,19 @@ const AddProblem = () => {
           input: problem.sampleInput,
           output: problem.sampleOutput
         }
-      ]
+      ],
+      hiddenTests: problem.hiddenTests
     };
 
     try {
       const res = await fetch("http://localhost:5050/api/problems/add", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
 
       const data = await res.json();
       alert(data.message || "Problem added successfully");
-
-      // ✅ Clear form and localStorage on success
       setProblem({
         title: '',
         difficulty: 'Easy',
@@ -83,6 +87,10 @@ const AddProblem = () => {
         constraints: '',
         sampleInput: '',
         sampleOutput: '',
+        hiddenTests: [
+          { input: '', output: '' },
+          { input: '', output: '' }
+        ]
       });
       localStorage.removeItem(LOCAL_STORAGE_KEY);
     } catch (error) {
@@ -149,6 +157,28 @@ const AddProblem = () => {
                 <Form.Control as="textarea" rows={2} name="sampleOutput" value={problem.sampleOutput} onChange={handleChange} />
               </Form.Group>
             </Row>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Hidden Test Cases</Form.Label>
+              {problem.hiddenTests.map((test, idx) => (
+                <div key={idx}>
+                  <Form.Label>Input #{idx + 1}</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    value={test.input}
+                    onChange={(e) => handleHiddenTestChange(idx, 'input', e.target.value)}
+                  />
+                  <Form.Label>Output #{idx + 1}</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    value={test.output}
+                    onChange={(e) => handleHiddenTestChange(idx, 'output', e.target.value)}
+                  />
+                </div>
+              ))}
+            </Form.Group>
 
             <div className="text-center">
               <Button variant="primary" type="submit">Submit Problem</Button>

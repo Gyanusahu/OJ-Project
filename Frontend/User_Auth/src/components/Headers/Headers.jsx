@@ -60,27 +60,32 @@ const data={
 
         {/* Right Side Buttons */}
         {/* Right Side Buttons */}
-<div className="ms-auto d-flex align-items-center gap-2 me-3">
+{/* Right Side Navigation - stack vertically on mobile */}
+<Nav className="ms-auto d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 mt-3 mt-lg-0">
   <Button
     variant="outline-warning"
     onClick={() => navigate('/leaderboard')}
+    className="w-100 w-lg-auto text-nowrap"
   >
     🏆 Leaderboard
   </Button>
   <Button
     variant="outline-info"
     onClick={() => navigate('/dashboard')}
+    className="w-100 w-lg-auto text-nowrap"
   >
     User Dashboard
   </Button>
   <Button
     variant="outline-light"
-    className="logout-button"
+    className="logout-button w-100 w-lg-auto text-nowrap"
     onClick={handleLogout}
   >
     Logout
   </Button>
-</div>
+</Nav>
+
+
 
       </Navbar.Collapse>
     </Container>

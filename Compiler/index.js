@@ -27,28 +27,44 @@ app.post("/run", async (req, res) => {
 
 
 app.post("/submit", async (req, res) => {
-  const { language = "cpp", code, input, expectedOutput } = req.body;
+  const { language = "cpp", code, testCases = [] } = req.body;
 
-  if (!code || !expectedOutput) {
-    return res.status(400).json({ success: false, error: "Code or expected output missing" });
+  console.log("🟡 /submit called");
+
+  if (!code || !testCases.length) {
+    return res.status(400).json({ success: false, error: "Code or testCases missing" });
   }
 
   try {
     const filePath = generateFile(language, code);
-    const output = await executeCpp(filePath, input);
 
-    const actualOutput = output.stdout.trim();
-    const expected = expectedOutput.trim();
+    for (let i = 0; i < testCases.length; i++) {
+      const { input, output: expectedOutput, isHidden } = testCases[i];
+      console.log(`🧪 Running test ${i + 1}:`);
+      const result = await executeCpp(filePath, input);
 
-    if (actualOutput === expected) {
-      return res.json({ success: true, verdict: "Accepted" });
-    } else {
-      return res.json({ success: true, verdict: "Failed", actualOutput });
+      const actualOutput = result.stdout.trim();
+      const expected = expectedOutput.trim();
+
+      if (actualOutput !== expected) {
+        return res.json({
+          success: true,
+          verdict: "Failed",
+          failedTest: i + 1,
+          isHidden,
+          actualOutput,
+        });
+      }
     }
+
+    return res.json({ success: true, verdict: "Accepted" });
   } catch (error) {
+    console.error("🔥 Submit Error:", error);
     return res.status(500).json({ success: false, error: error.stderr || "Execution failed" });
   }
 });
+
+
 
 app.post("/ai-review", async (req, res) => {
   const { code, problemDescription } = req.body;
