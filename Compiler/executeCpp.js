@@ -7,20 +7,24 @@ if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
 
-const executeCpp = (filePath, input = "") => {
+const executeCpp = (filePath, input = "", timeLimitMs = 2000) => {
   return new Promise((resolve, reject) => {
     const jobId = path.basename(filePath).split(".")[0];
     const executablePath = path.join(outputPath, `${jobId}.exe`);
     const compileCommand = `g++ "${filePath}" -o "${executablePath}"`;
 
-    // Step 1: Compile
     exec(compileCommand, (err, stdout, stderr) => {
       if (err) return reject({ stderr });
 
-      // Step 2: Execute with input
       const run = spawn(executablePath);
       let output = "";
       let error = "";
+      let timedOut = false;
+
+      const timeout = setTimeout(() => {
+        timedOut = true;
+        run.kill(); // Kill the process
+      }, timeLimitMs);
 
       run.stdin.write(input);
       run.stdin.end();
@@ -33,8 +37,17 @@ const executeCpp = (filePath, input = "") => {
         error += data.toString();
       });
 
-      run.on("close", () => {
-        if (error) return reject({ stderr: error });
+      run.on("close", (code) => {
+        clearTimeout(timeout);
+
+        if (timedOut) {
+          return reject({ stderr: "❌ Time Limit Exceeded" });
+        }
+
+        if (error) {
+          return reject({ stderr: error });
+        }
+
         resolve({ stdout: output });
       });
     });

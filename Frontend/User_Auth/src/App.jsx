@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Super from "./components/Super";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Headers from "./components/Headers/Headers";
-import Home from "./pages/Home/Home";
+import Home from "./pages/Home/Hero.jsx";
 // Change This
 import AddProblem from "./pages/AddProblem/AddProblem";  
 import Edit from "./pages/Edit/Edit";
@@ -21,6 +21,9 @@ import ProblemList from "./pages/ProblemList/ProblemList";
 import ProblemDetail from "./pages/ProblemDetail/ProblemDetail";
 import UserDashboard from "./pages/UserDashboard/userDashboard";
 import Leaderboard from "./pages/LeaderBoard/Leaderboard";
+import AdminPanel from "./pages/UserController/AdminPanel.jsx";
+import AdminRoute from "./components/ProtectedRoutes/AdminRoute.jsx";
+
 const App=()=>{
     return (
         <>
@@ -31,17 +34,38 @@ const App=()=>{
             <Route path="/password/forgot" element={<ForgotPassword />}/>
             <Route path="/otp/verify" element={<OtpVerify />}/>
             <Route path="/password/update" element={<UpdatePassword />}/>
-           
+            <Route path="/" element={<Home/>}/>
+            <Route path="/problems" element={<ProblemList />} />
+             <Route path="/problems/:id" element={<ProblemDetail />} />
             <Route element={<Super/>}>
             <Route path="/dashboard" element={<UserDashboard/>}/>
             <Route path="/leaderboard" element={<Leaderboard/>} />
-            <Route path="/" element={<MyProfile/>}/>
-             <Route path="/problems" element={<ProblemList />} />
+           
+             
             <Route path="/home" element={<Home/>}/>
-           <Route path='/addproblems' element={<AddProblem/>}/>
+           {/* <Route path='/addproblems' element={<AddProblem/>}/> */}
            <Route path='/edit/:id' element={<Edit/>}/>
            <Route path="/userprofile/:id" element={<Profile/>}/>
-           <Route path="/problems/:id" element={<ProblemDetail />} />
+          
+           {/* <Route path="/usercontroller" element={<AdminPanel />}/> */}
+
+           <Route
+  path="/addproblems"
+  element={
+    <AdminRoute>
+      <AddProblem />
+    </AdminRoute>
+  }
+/>
+<Route
+  path="/usercontroller"
+  element={
+    <AdminRoute>
+      <AdminPanel />
+    </AdminRoute>
+  }
+/>
+
             </Route>
         </Routes>
           <ToastContainer position="top-right" autoClose={3000} />

@@ -1,6 +1,5 @@
-// ✅ Final Part: ProblemDetail.jsx (Submission using both sample + hidden tests)
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Headers from '../../components/Headers/Headers';
 import Badge from 'react-bootstrap/Badge';
@@ -9,9 +8,14 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import './ProblemDetail.css';
 import ReactMarkdown from 'react-markdown';
+import httpAction from '../../utils/httpAction';
+import apis from '../../utils/apis';
+import Footer from '../../components/Footers/Footer';
 
 const ProblemDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [problem, setProblem] = useState(null);
   const [code, setCode] = useState('');
   const [input, setInput] = useState('');
@@ -19,21 +23,21 @@ const ProblemDetail = () => {
   const [loading, setLoading] = useState(false);
   const [aiReview, setAiReview] = useState('');
   const [reviewLoading, setReviewLoading] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleAiReview = async () => {
-    if (!code || !problem.statement) return alert("Missing code or problem description");
-    setReviewLoading(true);
-    try {
-      const res = await axios.post("http://localhost:7000/ai-review", {
-        code,
-        problemDescription: problem.statement
-      });
-      setAiReview(res.data.success ? res.data.aiReview : "❌ AI Review failed.");
-    } catch (err) {
-      setAiReview(err.response?.data?.error || "Unknown AI review error");
-    }
-    setReviewLoading(false);
-  };
+  // 🔒 Check login
+  useEffect(() => {
+    const getUser = async () => {
+      const data = { url: apis().userProfile };
+      const result = await httpAction(data);
+      if (result?.status) {
+        setUser(result.user);
+      } else {
+        setUser(null);
+      }
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     const fetchProblem = async () => {
@@ -48,6 +52,7 @@ const ProblemDetail = () => {
   }, [id]);
 
   const handleRun = async () => {
+    if (!user) return navigate("/login");
     try {
       const res = await axios.post("http://localhost:7000/run", {
         code,
@@ -61,39 +66,53 @@ const ProblemDetail = () => {
   };
 
   const handleSubmit = async () => {
-  if (!problem) return;
+    if (!user) return navigate("/login");
+    if (!problem) return;
+    setLoading(true);
+    try {
+      const allTests = [
+        ...(problem.samples || []).map(t => ({ ...t, isHidden: false })),
+        ...(problem.hiddenTests || []).map(t => ({ ...t, isHidden: true }))
+      ];
 
-  setLoading(true);
-  try {
-    const allTests = [
-      ...(problem.samples || []).map(t => ({ ...t, isHidden: false })),
-      ...(problem.hiddenTests || []).map(t => ({ ...t, isHidden: true }))
-    ];
+      const res = await axios.post("http://localhost:7000/submit", {
+        code,
+        language: "cpp",
+        testCases: allTests,
+      });
 
-    const res = await axios.post("http://localhost:7000/submit", {
-      code,
-      language: "cpp",
-      testCases: allTests,
-    });
+      if (res.data.success) {
+        if (res.data.verdict === "Accepted") {
+          setOutput("✅ All test cases passed!");
+        } else {
+          setOutput(`❌ Failed on ${res.data.isHidden ? 'Hidden' : 'Sample'} Test Case #${res.data.failedTest}\nYour Output:\n${res.data.actualOutput}`);
+        }
 
-    if (res.data.success) {
-      if (res.data.verdict === "Accepted") {
-        setOutput("✅ All test cases passed!");
+        await axios.post("http://localhost:5050/api/user/increment-submission", {}, { withCredentials: true });
       } else {
-        setOutput(`❌ Failed on ${res.data.isHidden ? 'Hidden' : 'Sample'} Test Case #${res.data.failedTest}\nYour Output:\n${res.data.actualOutput}`);
+        setOutput("❌ Submission Error");
       }
-
-      // Update submission count
-      await axios.post("http://localhost:5050/api/user/increment-submission", {}, { withCredentials: true });
-    } else {
-      setOutput("❌ Submission Error");
+    } catch (err) {
+      setOutput(err.response?.data?.error || "Unknown error");
     }
-  } catch (err) {
-    setOutput(err.response?.data?.error || "Unknown error");
-  }
+    setLoading(false);
+  };
 
-  setLoading(false);
-};
+  const handleAiReview = async () => {
+    if (!user) return navigate("/login");
+    if (!code || !problem.statement) return alert("Missing code or problem description");
+    setReviewLoading(true);
+    try {
+      const res = await axios.post("http://localhost:7000/ai-review", {
+        code,
+        problemDescription: problem.statement
+      });
+      setAiReview(res.data.success ? res.data.aiReview : "❌ AI Review failed.");
+    } catch (err) {
+      setAiReview(err.response?.data?.error || "Unknown AI review error");
+    }
+    setReviewLoading(false);
+  };
 
   if (!problem) return <p className="text-center mt-5">Loading...</p>;
 
@@ -108,7 +127,7 @@ const ProblemDetail = () => {
               <h3>{problem.title}</h3>
               <Badge bg={
                 problem.difficulty === "Easy" ? "success" :
-                problem.difficulty === "Medium" ? "warning" : "danger"
+                  problem.difficulty === "Medium" ? "warning" : "danger"
               }>
                 {problem.difficulty}
               </Badge>
@@ -203,6 +222,7 @@ const ProblemDetail = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

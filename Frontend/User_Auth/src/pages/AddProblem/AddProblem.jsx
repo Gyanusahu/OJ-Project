@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Headers from '../../components/Headers/Headers';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Footer from '../../components/Footers/Footer';
 
 const LOCAL_STORAGE_KEY = "add-problem-draft";
 
@@ -186,6 +187,7 @@ const AddProblem = () => {
           </Form>
         </Card>
       </div>
+      <Footer/>
     </>
   );
 };

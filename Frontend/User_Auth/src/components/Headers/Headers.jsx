@@ -62,6 +62,7 @@ const data={
         {/* Right Side Buttons */}
 {/* Right Side Navigation - stack vertically on mobile */}
 <Nav className="ms-auto d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 mt-3 mt-lg-0">
+ {user&&
   <Button
     variant="outline-warning"
     onClick={() => navigate('/leaderboard')}
@@ -69,6 +70,8 @@ const data={
   >
     🏆 Leaderboard
   </Button>
+}
+{user&&
   <Button
     variant="outline-info"
     onClick={() => navigate('/dashboard')}
@@ -76,6 +79,8 @@ const data={
   >
     User Dashboard
   </Button>
+}
+  {user&&
   <Button
     variant="outline-light"
     className="logout-button w-100 w-lg-auto text-nowrap"
@@ -83,6 +88,16 @@ const data={
   >
     Logout
   </Button>
+}
+{!user&&
+   <Button
+    variant="outline-light"
+    className="login-button w-100 w-lg-auto text-nowrap"
+    onClick={() => navigate("/login")}  
+  >
+    Login
+  </Button>
+}
 </Nav>
 
 

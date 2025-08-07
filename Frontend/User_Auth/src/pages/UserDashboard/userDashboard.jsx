@@ -4,6 +4,7 @@ import httpAction from '../../utils/httpAction';
 import apis from '../../utils/apis';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Headers from "../../components/Headers/Headers";
+import Footer from "../../components/Footers/Footer";
 
 const UserDashboard = () => {
   const [user, setUser] = useState(null);
@@ -34,6 +35,13 @@ const UserDashboard = () => {
     <Headers/>
     <div className="container mt-5">
       <h2 className="mb-4 text-center">👤 User Dashboard</h2>
+        {user.isAdmin && (
+    <div className="text-end mb-3">
+      <a href="/usercontroller" className="btn btn-outline-primary">
+        ⚙️ User Controller
+      </a>
+    </div>
+  )}
       <div className="row g-4">
         {/* Profile Info Card */}
         <div className="col-md-6">
@@ -62,6 +70,7 @@ const UserDashboard = () => {
         </div>
       </div>
     </div>
+    {/* <Footer/> */}
     </>
   );
 };

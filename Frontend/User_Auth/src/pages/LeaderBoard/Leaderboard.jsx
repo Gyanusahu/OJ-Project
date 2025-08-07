@@ -3,6 +3,7 @@ import httpAction from "../../utils/httpAction";
 import apis from "../../utils/apis";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Headers from "../../components/Headers/Headers";
+import Footer from "../../components/Footers/Footer";
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -79,6 +80,7 @@ const Leaderboard = () => {
           </table>
         </div>
       </div>
+      <Footer/>
     </>
   );
 };
