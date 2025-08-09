@@ -25,14 +25,14 @@ const Login=()=>{
     })
 
     const submitHandler=async (values)=>{
-        console.log(values)
+        // console.log(values)
         const data={
             url:apis().loginUser,
             method:'POST',
             body:values,
         }
         const result=await httpAction(data);
-        console.log(result)
+        // console.log(result)
         if(result?.status){
            navigate("/")
         }
@@ -115,13 +115,13 @@ const Login=()=>{
                     startIcon={<ArrowBack/>}
                     variant="outlined" fullWidth>create new account</Button>
                 </div>
-                <div className="col-12">
+                {/* <div className="col-12">
                     <Button 
                     onClick={()=>navigate('/password/forgot')}
                     fullWidth variant="text" color="error">
                         forgotten password?
                     </Button>
-                </div>
+                </div> */}
             </div>
         </div>
                 </Form>}
