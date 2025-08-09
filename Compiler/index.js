@@ -11,7 +11,7 @@ const {generateAiReview}=require("./generateAiReview");
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-const cors = require("cors");
+
 
 app.use(cors({
   origin: [

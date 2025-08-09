@@ -15,7 +15,7 @@ const submissionRoutes = require('./routes/submission');
 // const cors = require('cors');
 // const { app } = require('../Compiler');
 
-const cors = require("cors");
+// const cors = require("cors");
 
 app.use(cors({
   origin: [
