@@ -18,14 +18,23 @@ const submissionRoutes = require('./routes/submission');
 // const cors = require("cors");
 
 app.use(cors({
-  origin: [
-    "https://coderush.space",
-    "https://www.coderush.space"
-  ],
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      "https://coderush.space",
+      "https://www.coderush.space"
+    ];
+    if (!origin) return callback(null, true); // Allow non-browser requests
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed for this origin: " + origin));
+    }
+  },
   methods: "GET,POST,PUT,DELETE,OPTIONS",
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
+
 
 app.use(express.json())
 app.use(express.urlencoded({extended:false}));
