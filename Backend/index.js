@@ -13,7 +13,7 @@ const errorHandler=require('./middlewares/errorHandler')
 const problemRoutes = require('./routes/problem');
 const submissionRoutes = require('./routes/submission');
 // const cors = require('cors');
-const { app } = require('../Compiler');
+// const { app } = require('../Compiler');
 
 app.use(cors({
     origin: "https://coderush.space", // Allow all origins
