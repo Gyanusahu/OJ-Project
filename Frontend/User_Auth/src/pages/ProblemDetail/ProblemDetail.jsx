@@ -66,37 +66,55 @@ const ProblemDetail = () => {
   };
 
   const handleSubmit = async () => {
-    if (!user) return navigate("/login");
-    if (!problem) return;
-    setLoading(true);
-    try {
-      const allTests = [
-        ...(problem.samples || []).map(t => ({ ...t, isHidden: false })),
-        ...(problem.hiddenTests || []).map(t => ({ ...t, isHidden: true }))
-      ];
+  if (!user) return navigate("/login");
+  if (!problem) return;
+  setLoading(true);
+  try {
+    const allTests = [
+      ...(problem.samples || []).map(t => ({ ...t, isHidden: false })),
+      ...(problem.hiddenTests || []).map(t => ({ ...t, isHidden: true }))
+    ];
 
-      const res = await axios.post("http://localhost:7000/submit", {
-        code,
-        language: "cpp",
-        testCases: allTests,
-      });
+    const res = await axios.post("http://localhost:7000/submit", {
+      code,
+      language: "cpp",
+      testCases: allTests,
+    });
 
-      if (res.data.success) {
-        if (res.data.verdict === "Accepted") {
-          setOutput("✅ All test cases passed!");
-        } else {
-          setOutput(`❌ Failed on ${res.data.isHidden ? 'Hidden' : 'Sample'} Test Case #${res.data.failedTest}\nYour Output:\n${res.data.actualOutput}`);
-        }
-
-        await axios.post("http://localhost:5050/api/user/increment-submission", {}, { withCredentials: true });
+    let verdictText = "";
+    if (res.data.success) {
+      if (res.data.verdict === "Accepted") {
+        verdictText = "Accepted";
+        setOutput("✅ All test cases passed!");
       } else {
-        setOutput("❌ Submission Error");
+        verdictText = "Wrong Answer";
+        setOutput(`❌ Failed on ${res.data.isHidden ? 'Hidden' : 'Sample'} Test Case #${res.data.failedTest}\nYour Output:\n${res.data.actualOutput}`);
       }
-    } catch (err) {
-      setOutput(err.response?.data?.error || "Unknown error");
+
+      // 🔹 Save submission to backend for history
+      await axios.post("http://localhost:5050/api/submissions/save", {
+        userId: user._id,
+        userName: user.name,
+        problemId: problem._id,
+        problemTitle: problem.title,
+        code,
+        verdict: verdictText,
+        submittedAt: new Date()
+      }, { withCredentials: true });
+
+      // Increment submission count
+      await axios.post("http://localhost:5050/api/user/increment-submission", {}, { withCredentials: true });
+
+    } else {
+      verdictText = "Error";
+      setOutput("❌ Submission Error");
     }
-    setLoading(false);
-  };
+  } catch (err) {
+    setOutput(err.response?.data?.error || "Unknown error");
+  }
+  setLoading(false);
+};
+
 
   const handleAiReview = async () => {
     if (!user) return navigate("/login");

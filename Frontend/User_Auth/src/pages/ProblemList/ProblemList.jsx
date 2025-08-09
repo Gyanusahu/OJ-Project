@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Pagination from 'react-bootstrap/Pagination';
-import ProblemRow from '../../components/ProblemRow'; // adjust path if needed
+import ProblemRow from '../../components/Auth/ProblemRow'; // adjust path if needed
 
 import './ProblemList.css'; // optional for styles
 import Headers from '../../components/Headers/Headers';

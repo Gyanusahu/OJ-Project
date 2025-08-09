@@ -17,12 +17,9 @@ router.post('/login', login);
 router.get('/profile', auth, getUser);
 router.get('/logout', logout);
 router.get('/access', auth, getAccess);
-
-// Submissions & Leaderboard
 router.post('/increment-submission', auth, incrementSubmission);
 router.get('/leaderboard', getLeaderboard);
 
-// ✅ Admin Management Routes (protected)
 router.get('/users', auth, getAllUsers);            // GET all users
 router.post('/users/admin', auth, updateAdminStatus); // POST to promote/demote
 

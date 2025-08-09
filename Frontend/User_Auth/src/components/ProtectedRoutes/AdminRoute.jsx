@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import apis from "../../utils/apis";
 import httpAction from "../../utils/httpAction";
 import Spinner from "react-bootstrap/Spinner";
-import "../../components/Super.css"; // Use same loader styling
+import "../../components/Auth/Super.css"; // Use same loader styling
 
 const AdminRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);

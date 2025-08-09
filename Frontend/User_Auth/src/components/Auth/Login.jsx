@@ -4,9 +4,9 @@ import {TextField,Button, FormControl, InputAdornment, IconButton, Divider} from
 import * as Yup from 'yup';
 import {Form,Formik} from "formik";
 import {ArrowBack, Google, Visibility,VisibilityOff} from '@mui/icons-material'
-import useGeneral from "../hooks/useGeneral";
-import apis from "../utils/apis";
-import httpAction from "../utils/httpAction";
+import useGeneral from "../../hooks/useGeneral";
+import apis from "../../utils/apis";
+import httpAction from "../../utils/httpAction";
 const Login=()=>{
     // validation to check Every details Is Enter or Not
     const [visible,setVisible]=useState(false)

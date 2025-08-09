@@ -8,16 +8,18 @@ const getUser = async (req, res, next) => {
             return res.status(404).json({ status: false, message: "User not found" });
         }
 
-        res.status(200).json({
-            message: 'success',
-            status: true,
-            user: {
-                name: findedUser.name,
-                email: findedUser.email,
-                submission:findedUser.submission,
-                isAdmin: findedUser.isAdmin  
-            }
-        });
+res.status(200).json({
+    message: 'success',
+    status: true,
+    user: {
+        _id: findedUser._id,
+        name: findedUser.name,
+        email: findedUser.email,
+        submission: findedUser.submission,
+        isAdmin: findedUser.isAdmin  
+    }
+});
+
     } catch (error) {
         next(error);
     }

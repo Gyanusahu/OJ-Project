@@ -5,9 +5,9 @@ import * as Yup from 'yup'
 import { Password } from "@mui/icons-material";
 import {ArrowBack, Google, Visibility,VisibilityOff} from '@mui/icons-material'
 import { IoPersonAdd } from "react-icons/io5";
-import useGeneral from "../hooks/useGeneral";
-import httpAction from "../utils/httpAction";
-import apis from "../utils/apis";
+import useGeneral from "../../hooks/useGeneral";
+import httpAction from "../../utils/httpAction";
+import apis from "../../utils/apis";
  import {  toast } from 'react-toastify';
 // import React from "react";
 const Register =()=>{

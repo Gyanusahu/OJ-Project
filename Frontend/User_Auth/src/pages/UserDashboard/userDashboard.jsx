@@ -5,6 +5,7 @@ import apis from '../../utils/apis';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Headers from "../../components/Headers/Headers";
 import Footer from "../../components/Footers/Footer";
+import PreviousSubmissions from "../Submission/MySubmissions";
 
 const UserDashboard = () => {
   const [user, setUser] = useState(null);
@@ -70,6 +71,7 @@ const UserDashboard = () => {
         </div>
       </div>
     </div>
+    <PreviousSubmissions />
     {/* <Footer/> */}
     </>
   );

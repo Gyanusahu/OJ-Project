@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import apis from "../utils/apis";
-import httpAction from "../utils/httpAction";
+import apis from "../../utils/apis";
+import httpAction from "../../utils/httpAction";
 import Spinner from "react-bootstrap/Spinner";
 import "./Super.css"; // 💡 Create this file for custom loader styling
 

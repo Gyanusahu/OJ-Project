@@ -11,6 +11,8 @@ const app=express();
 const userRoutes=require('./routes/user')
 const errorHandler=require('./middlewares/errorHandler')
 const problemRoutes = require('./routes/problem');
+const submissionRoutes = require('./routes/submission');
+
 app.use(cors({
     origin:'http://localhost:3000',
     credentials:true
@@ -58,6 +60,9 @@ googleAuth,
 app.use('/api/user', userRoutes); 
 
 app.use('/api/problems', problemRoutes);
+app.use('/api/submissions', submissionRoutes);
+
+
 app.use(errorHandler)
 getConnection()
 app.listen(process.env.PORT,()=>console.log(`server is running on port: ${process.env.PORT}`))
