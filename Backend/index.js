@@ -69,12 +69,12 @@ app.get('/auth/google',passport.authenticate('google',{
     prompt:"select_account",
 }))
 app.get('/auth/google/callback',passport.authenticate('google',{
-    failureRedirect:'http://localhost:3000/login'
+    failureRedirect:'https://www.coderush.space/login'
 }),
 googleAuth,
 
 (req,res,next)=>{
-    res.redirect("http://localhost:3000/");
+    res.redirect("https://www.coderush.space/");
 })
 app.use('/api/user', userRoutes); 
 
