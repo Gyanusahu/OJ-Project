@@ -33,7 +33,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5050/api/user/profile', { withCredentials: true })
+      .get('https://backend.coderush.space/api/user/profile', { withCredentials: true })
       .then((res) => setUser(res.data))
       .catch((err) => console.error(err))
       .finally(() => setLoading(false)); // Mark as loaded even if error

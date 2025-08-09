@@ -4,12 +4,19 @@ const {executeCpp} =require("./executeCpp")
 require("./cleanup"); 
 
 const app=express();
+exports.app = app;
 const cors = require('cors');
-const {generateAiReview}=require("./generateAiReview")
+const {generateAiReview}=require("./generateAiReview");
+
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "https://coderush.space", // Allow all origins
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Allow all methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow all headers
+    credentials:true,
+}));
 app.post("/run", async (req, res) => {
   const { code, input = "", language = "cpp" } = req.body;
 

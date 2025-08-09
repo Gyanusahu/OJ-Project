@@ -1,5 +1,5 @@
 const apis = () => {
-  const local = "http://localhost:5050/";
+  const local = "https://backend.coderush.space/";
 
   const list = {
     // 🧑 Auth (✅ add /api)

@@ -42,7 +42,7 @@ const ProblemDetail = () => {
   useEffect(() => {
     const fetchProblem = async () => {
       try {
-        const res = await axios.get(`http://localhost:5050/api/problems/${id}`);
+        const res = await axios.get(`https://backend.coderush.space/api/problems/${id}`);
         setProblem(res.data);
       } catch (err) {
         console.error(err);
@@ -54,7 +54,7 @@ const ProblemDetail = () => {
   const handleRun = async () => {
     if (!user) return navigate("/login");
     try {
-      const res = await axios.post("http://localhost:7000/run", {
+      const res = await axios.post("https://compiler.coderush.space/run", {
         code,
         input,
         language: "cpp"
@@ -75,7 +75,7 @@ const ProblemDetail = () => {
       ...(problem.hiddenTests || []).map(t => ({ ...t, isHidden: true }))
     ];
 
-    const res = await axios.post("http://localhost:7000/submit", {
+    const res = await axios.post("https://compiler.coderush.space/submit", {
       code,
       language: "cpp",
       testCases: allTests,
@@ -92,7 +92,7 @@ const ProblemDetail = () => {
       }
 
       // 🔹 Save submission to backend for history
-      await axios.post("http://localhost:5050/api/submissions/save", {
+      await axios.post("https://backend.coderush.space/api/submissions/save", {
         userId: user._id,
         userName: user.name,
         problemId: problem._id,
@@ -103,7 +103,7 @@ const ProblemDetail = () => {
       }, { withCredentials: true });
 
       // Increment submission count
-      await axios.post("http://localhost:5050/api/user/increment-submission", {}, { withCredentials: true });
+      await axios.post("https://backend.coderush.space/api/user/increment-submission", {}, { withCredentials: true });
 
     } else {
       verdictText = "Error";
@@ -121,7 +121,7 @@ const ProblemDetail = () => {
     if (!code || !problem.statement) return alert("Missing code or problem description");
     setReviewLoading(true);
     try {
-      const res = await axios.post("http://localhost:7000/ai-review", {
+      const res = await axios.post("https://compiler.coderush.space/ai-review", {
         code,
         problemDescription: problem.statement
       });

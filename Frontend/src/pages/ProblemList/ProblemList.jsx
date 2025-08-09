@@ -22,7 +22,7 @@ const ProblemList = () => {
 
   const fetchProblems = async () => {
     try {
-      const res = await axios.get('http://localhost:5050/api/problems', {
+      const res = await axios.get('https://backend.coderush.space/api/problems', {
         params: { title, tag, difficulty, page, limit }
       });
       setProblems(res.data.problems);

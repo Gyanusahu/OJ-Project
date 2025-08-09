@@ -70,7 +70,7 @@ const AddProblem = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5050/api/problems/add", {
+      const res = await fetch("https://backend.coderush.space/api/problems/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

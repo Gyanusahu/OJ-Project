@@ -14,7 +14,7 @@ const AdminPanel = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('http://localhost:5050/api/user/users', {
+      const res = await axios.get('https://backend.coderush.space/api/user/users', {
         withCredentials: true,
       });
 
@@ -31,7 +31,7 @@ const AdminPanel = () => {
     try {
       const newRole = !isAdmin;
       await axios.post(
-        'http://localhost:5050/api/user/users/admin',
+        'https://backend.coderush.space/api/user/users/admin',
         {
           userId,
           isAdmin: newRole,

@@ -13,7 +13,7 @@ const PreviousSubmissions = () => {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get('http://localhost:5050/api/user/profile', { withCredentials: true });
+      const res = await axios.get('https://backend.coderush.space/api/user/profile', { withCredentials: true });
       setUser(res.data.user);
     } catch (err) {
       console.error('Error fetching user:', err);
@@ -23,7 +23,7 @@ const PreviousSubmissions = () => {
   const fetchSubmissions = async () => {
     if (!user) return;
     try {
-      const res = await axios.get('http://localhost:5050/api/submissions/my-submissions', {
+      const res = await axios.get('https://backend.coderush.space/api/submissions/my-submissions', {
         params: { userId: user._id, page, limit }
       });
       setSubmissions(res.data.submissions);

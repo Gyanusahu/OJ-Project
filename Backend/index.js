@@ -12,11 +12,15 @@ const userRoutes=require('./routes/user')
 const errorHandler=require('./middlewares/errorHandler')
 const problemRoutes = require('./routes/problem');
 const submissionRoutes = require('./routes/submission');
+// const cors = require('cors');
+const { app } = require('../Compiler');
 
 app.use(cors({
-    origin:'http://localhost:3000',
-    credentials:true
-}))
+    origin: "https://coderush.space", // Allow all origins
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Allow all methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow all headers
+    credentials:true,
+}));
 app.use(express.json())
 app.use(express.urlencoded({extended:false}));
 app.use(session({
@@ -32,7 +36,7 @@ app.use(passport.session());
 passport.use(new googleStrategy({
     clientID:process.env.GOOGLE_CLIENT_ID,
     clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL:'http://localhost:5050/auth/google/callback',
+    callbackURL:'https://backend.coderush.space/auth/google/callback',
 },(accessToken,refreshToken,profile,done)=>{
     console.log(profile)
     return done(null,profile);

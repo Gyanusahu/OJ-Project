@@ -38,7 +38,7 @@ const Register =()=>{
         }
      }
        const loginWithGoogle=()=>{
-        window.location.href='http://localhost:5050/auth/google'
+        window.location.href='https://backend.coderush.space/auth/google'
     }
     return(
         <div className="auth_card">
