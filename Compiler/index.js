@@ -14,22 +14,20 @@ app.use(express.json());
 
 
 app.use(cors({
-  origin: (origin, callback) => {
-    const allowedOrigins = [
-      "https://coderush.space",
-      "https://www.coderush.space"
-    ];
-    if (!origin) return callback(null, true); // Allow non-browser requests
-    if (allowedOrigins.includes(origin)) {
+  origin: function (origin, callback) {
+    const allowedOrigins = ["https://coderush.space", "https://www.coderush.space"];
+    if (!origin) return callback(null, true); // Allow non-browser or curl requests
+    if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error("CORS not allowed for this origin: " + origin));
+      callback(null, false);  // Reject CORS but don't throw error
     }
   },
   methods: "GET,POST,PUT,DELETE,OPTIONS",
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  credentials: true,
 }));
+
 
 
 app.post("/run", async (req, res) => {
