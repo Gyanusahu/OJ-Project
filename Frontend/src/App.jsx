@@ -27,6 +27,7 @@ import AdminPanel from "./pages/UserController/AdminPanel.jsx";
 import AdminRoute from "./components/ProtectedRoutes/AdminRoute.jsx";
 import PreviousSubmissions from "./pages/Submission/MySubmissions.jsx";
 import axios from 'axios';
+import Loader from "./components/Loader/loader.jsx";
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // NEW
@@ -39,7 +40,7 @@ const App = () => {
       .finally(() => setLoading(false)); // Mark as loaded even if error
   }, []);
 
-  if (loading) return <div>Loading...</div>; // Or show a spinner
+  if (loading) return <Loader />;
 
   return (
     <>

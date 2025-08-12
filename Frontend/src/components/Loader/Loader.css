@@ -1,0 +1,30 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+}
+
+.spinner {
+  width: 70px;
+  height: 70px;
+  border: 8px solid rgba(255, 255, 255, 0.2);
+  border-top: 8px solid #00ffcc;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+.loader-text {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  color: #00ffcc;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
